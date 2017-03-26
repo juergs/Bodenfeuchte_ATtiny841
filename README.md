@@ -10,7 +10,8 @@ ATtiny841 - Pinout:
 Programming via USBasp and Avrdude using avrdudess as GUI (Windows & Linux via Mono) 
 https://github.com/juergs/Avrdudess
 
-Avrdudess-Settings (set clock to 32KHz, higher clockrates doesn't work) 
+Avrdudess-Settings (set clock to 32KHz, higher clockrates won't work) 
+
 ![avrdudess](./ATtiny841_avrdudess_settings.png)
 
 Remarks:
@@ -19,4 +20,15 @@ Global variables use 309 bytes (60%) of dynamic memory, leaving 203 bytes for lo
 Maximum is 512 bytes.
 
 Narcoleptic + VCC-Reading specific to ATtiny841 only!
+
+#Arduino 841-Support & Caveats:
+https://github.com/SpenceKonde/arduino-tiny-841
+
+
+#841 Hardware + Schematic:
+https://www.tindie.com/products/DrAzzy/attiny84184-breakout-wserial-header-bare-board/
+
+#1634 Hardware-Breakout
+https://www.tindie.com/products/DrAzzy/attiny1634-breakout-wserial-header-bare-board/
+
 
