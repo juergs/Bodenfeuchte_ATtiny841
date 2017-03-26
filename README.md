@@ -18,3 +18,5 @@ Sketch uses 8142 bytes (99%) of program storage space. Maximum is 8192 bytes.
 Global variables use 309 bytes (60%) of dynamic memory, leaving 203 bytes for local variables. 
 Maximum is 512 bytes.
 
+Narcoleptic + VCC-Reading specific to ATtiny841 only!
+
