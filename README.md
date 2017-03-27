@@ -31,4 +31,7 @@ https://www.tindie.com/products/DrAzzy/attiny84184-breakout-wserial-header-bare-
 #1634 Hardware-Breakout
 https://www.tindie.com/products/DrAzzy/attiny1634-breakout-wserial-header-bare-board/
 
+Optional Bootloader & Pinouts
+https://github.com/limbeckengineering/ClamClock/tree/master/hardware/ATTinyCore-master
+
 

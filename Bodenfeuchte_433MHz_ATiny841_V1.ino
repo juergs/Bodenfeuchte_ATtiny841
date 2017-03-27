@@ -33,7 +33,7 @@
 //----------------------------------------
 #define TX_433_PIN                7     // Hardware-setup, auch in LaCross.cpp setzen! 
 #define DALLAS_SENSOR_PIN         10    // pullup resistor 4K7 - Data to VCC
-#define BODENFEUCHTE_POWER_PIN    6     //   
+#define BODENFEUCHTE_POWER_PIN    0     //  war 6 (SCK) stört Prorammierung 
 #define BODENFEUCHTE_SENSOR_PIN   1     //--- must be INT0: PB1, unique on 841 
 //----------------------------------------
 #define DEEP_SLEEP_MINUTES        2     // Deep_Sleep-Timeout, with no power consumption should be below 10 yS
@@ -42,11 +42,11 @@
 //----------------------------------------
 #define OW_ROMCODE_SIZE           8
 
-#define POWERAMV          BODENFEUCHTE_POWER_PIN    // Output line to provide power for the AMV
-#define INPUTFREQ         BODENFEUCHTE_SENSOR_PIN   // IRQ input for frequency count. Must be 2 or 3
+#define POWERAMV                  BODENFEUCHTE_POWER_PIN    // Output line to provide power for the AMV
+#define INPUTFREQ                 BODENFEUCHTE_SENSOR_PIN   // IRQ input for frequency count. Must be 2 or 3
 
-#define MAIN_PERIOD       998   // How long to count pulses, for a fixed frequency this should be 998 ms (for a total runtime of 1 sec with 1 MHz oscillator)
-#define SETTLE_TIME 1000 // Waiting time in ms between powering up AMV and stable frequency
+#define MAIN_PERIOD               998     // How long to count pulses, for a fixed frequency this should be 998 ms (for a total runtime of 1 sec with 1 MHz oscillator)
+#define SETTLE_TIME               1000    // Waiting time in ms between powering up AMV and stable frequency
 
 
 //--- set 18B20-instance
@@ -122,8 +122,8 @@ void setup()
   pinMode(DUO_LED_GN, OUTPUT);
   pinMode(DUO_LED_RT, OUTPUT);
 
-  //--- setup , make power-line for AMV output and low
-  pinMode(BODENFEUCHTE_SENSOR_PIN, INPUT);    // (INT0-Pin needed): pulse-input-pin for soilmoisture-circuit 
+  //--- setup , switch power for AMV off. Preset Pin as Output.
+  //--- sensor pin is set during measurement  
   pinMode(BODENFEUCHTE_POWER_PIN, OUTPUT);    // PowerPin fpor soilmoisture-circuit 
   digitalWrite(BODENFEUCHTE_POWER_PIN, LOW);  // off
   
@@ -158,6 +158,7 @@ void loop()
   digitalWrite(DUO_LED_RT, LOW);   
   
   uint16_t intVcc = MeasureVCC(); 
+  float controllerVCC = intVcc / 1000.0;
   
   #ifdef USE_SERIAL_FOR_DEBUG
     Serial.print("Vcc_1: "); Serial.println(intVcc);     
@@ -186,7 +187,7 @@ void loop()
   // [3] float VCC as humidity
   digitalWrite(LED_PB2, HIGH);
   LaCrosse.bSensorId = SENSORID_BATTERIE;
-  LaCrosse.h = intVcc/1000;   //--- internal VCC-reading       
+  LaCrosse.h = controllerVCC;   //--- internal VCC-reading as float
   LaCrosse.sendHumidity();  
   digitalWrite(LED_PB2, LOW);
  
@@ -231,7 +232,7 @@ float DoBodenFeuchteMeasurement()
     //--- [5] store actual counter value
     //---     register counts per period (frequency) and calculate IIR
     unsigned long _pulses = pulsecount;
-    pulsecount = 0;
+    pulsecount = 0; 
 
     //--- simple floating average
     average += _pulses;
